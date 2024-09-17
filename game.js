@@ -16,7 +16,6 @@ const statusText = document.getElementById('statusText');
 const player1DeckEl = document.getElementById('player1Deck');
 const player2DeckEl = document.getElementById('player2Deck');
 
-// Helper function to generate random cards with values between 1 and 50
 // Helper function to generate a shuffled array of unique cards between 1 and 50
 function generateRandomDeck() {
     const deck = [];
@@ -36,13 +35,14 @@ function generateRandomDeck() {
     return deck;
 }
 
-// Function to render the deck as a list
-function renderDeck(deck, deckElement) {
+// Function to render the deck as visual cards
+function renderDeck(deck, deckElement, playerClass) {
     deckElement.innerHTML = '';  // Clear the previous deck display
     deck.forEach(card => {
-        const li = document.createElement('li');
-        li.textContent = card;
-        deckElement.appendChild(li);
+        const cardDiv = document.createElement('div');
+        cardDiv.classList.add('card', playerClass); // Add card class and player color
+        cardDiv.textContent = card;
+        deckElement.appendChild(cardDiv);
     });
 }
 
@@ -50,8 +50,8 @@ function renderDeck(deck, deckElement) {
 function initializeGame() {
     player1Deck = generateRandomDeck();
     player2Deck = generateRandomDeck();
-    player1Health = 1000;
-    player2Health = 1000;
+    player1Health = 20;
+    player2Health = 20;
     player1HealthEl.textContent = player1Health;
     player2HealthEl.textContent = player2Health;
     isGameActive = true;
@@ -59,8 +59,8 @@ function initializeGame() {
     player1RollBtn.disabled = true;
     player2RollBtn.disabled = true;
     statusText.textContent = 'Click to roll the dice to see who attacks first!';
-    renderDeck(player1Deck, player1DeckEl);  // Display Player 1's deck
-    renderDeck(player2Deck, player2DeckEl);  // Display Player 2's deck
+    renderDeck(player1Deck, player1DeckEl, 'card-player1');  // Display Player 1's deck
+    renderDeck(player2Deck, player2DeckEl, 'card-player2');  // Display Player 2's deck
 }
 
 // Roll Dice to determine who attacks first
@@ -102,7 +102,7 @@ player1RollBtn.addEventListener('click', function() {
     statusText.textContent = `Player 1 attacks with ${attackPower} damage using a card!`;
     player2HealthEl.textContent = Math.max(player2Health, 0);  // Update health display
 
-    renderDeck(player1Deck, player1DeckEl);  // Update Player 1's deck display
+    renderDeck(player1Deck, player1DeckEl, 'card-player1');  // Update Player 1's deck display
 
     if (player2Health <= 0) {
         endGame(1); // Player 1 wins
@@ -126,7 +126,7 @@ player2RollBtn.addEventListener('click', function() {
     statusText.textContent = `Player 2 attacks with ${attackPower} damage using a card!`;
     player1HealthEl.textContent = Math.max(player1Health, 0);  // Update health display
 
-    renderDeck(player2Deck, player2DeckEl);  // Update Player 2's deck display
+    renderDeck(player2Deck, player2DeckEl, 'card-player2');  // Update Player 2's deck display
 
     if (player1Health <= 0) {
         endGame(2); // Player 2 wins
@@ -141,24 +141,23 @@ function switchTurns() {
         currentPlayer = 2;
         player1RollBtn.disabled = true;
         player2RollBtn.disabled = false;
-        statusText.textContent = 'Player 2\'s turn to attack!';
+        statusText.textContent = 'Player 2\'s turn!';
     } else {
         currentPlayer = 1;
         player2RollBtn.disabled = true;
         player1RollBtn.disabled = false;
-        statusText.textContent = 'Player 1\'s turn to attack!';
+        statusText.textContent = 'Player 1\'s turn!';
     }
 }
 
 // End the game
-function endGame(winner) {
+function endGame(winningPlayer) {
     isGameActive = false;
-    statusText.textContent = `Player ${winner} wins the game!`;
+    statusText.textContent = `Player ${winningPlayer} wins the game!`;
     player1RollBtn.disabled = true;
     player2RollBtn.disabled = true;
+    rollDiceBtn.disabled = true;
 }
 
-// Initialize the game
+// Initialize the game on page load
 initializeGame();
-
-// If you want to restart the game after each round, call initializeGame again

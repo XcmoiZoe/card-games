@@ -11,8 +11,26 @@
         .players { display: flex; justify-content: space-between; }
         .player { border: 1px solid #333; padding: 10px; width: 45%; }
         .status { margin-top: 20px; font-size: 1.2em; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin: 5px 0; }
+        .card { 
+            width: 60px; 
+            height: 90px; 
+            border: 2px solid #333; 
+            border-radius: 8px; 
+            display: inline-block; 
+            margin: 5px; 
+            font-size: 1.5em; 
+            text-align: center; 
+            line-height: 90px; 
+            background-color: #fff; 
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.3s ease; 
+        }
+        .card:hover { 
+            transform: scale(1.1); 
+        }
+        .deck { display: flex; flex-wrap: wrap; justify-content: center; }
+        .card-player1 { background-color: #F1C40F; }
+        .card-player2 { background-color: #3498DB; }
     </style>
 </head>
 <body>
@@ -25,7 +43,7 @@
             <h2>Player 1</h2>
             <p>Health: <span id="player1Health">20</span></p>
             <p>Deck:</p>
-            <ul id="player1Deck"></ul>
+            <div id="player1Deck" class="deck"></div>
             <button id="player1Roll" disabled>Roll for Player 1</button>
         </div>
 
@@ -33,7 +51,7 @@
             <h2>Player 2</h2>
             <p>Health: <span id="player2Health">20</span></p>
             <p>Deck:</p>
-            <ul id="player2Deck"></ul>
+            <div id="player2Deck" class="deck"></div>
             <button id="player2Roll" disabled>Roll for Player 2</button>
         </div>
     </div>
